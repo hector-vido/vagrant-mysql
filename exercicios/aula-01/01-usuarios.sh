@@ -26,9 +26,9 @@ for X in 'id,int' 'nome,varchar' 'email,varchar' 'nascimento,date' 'profissao,va
 	fi
 done
 
-grep -E 'ALTER.*TABLE.*usuarios.*COLUMN.*status.*INT' /root/.mysql_history > /dev/null
+grep -Ei 'ALTER.*TABLE.*usuarios.*COLUMN.*status.*INT' /root/.mysql_history > /dev/null
 MH="$?"
-grep -E 'ALTER.*TABLE.*usuarios.*COLUMN.*status.*INT' /root/.bash_history > /dev/null
+grep -Ei 'ALTER.*TABLE.*usuarios.*COLUMN.*status.*INT' /root/.bash_history > /dev/null
 BH="$?"
 
 if [ "$MH" -ne "0" ] && [ "$BH" -ne "0" ]; then
