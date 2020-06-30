@@ -47,7 +47,7 @@ else
 fi
 
 mysql curso -e \
-"SELECT * FROM usuarios WHERE nome = 'Paramahansa Yogananda' AND email = 'paramahansa@yogananda.in' AND nascimento = '1983-01-05' AND profissao = 'Yogi' AND status = 1" | \
+"SELECT * FROM usuarios WHERE nome = 'Paramahansa Yogananda' AND email = 'paramahansa@yogananda.in' AND nascimento = '1893-01-05' AND profissao = 'Yogi' AND status = 1" | \
 grep -i paramahansa > /dev/null 2>&1
 if [ "$?" -ne "0"  ]; then
 	echo -e "${RED}Ops... o usuário Paramahansa Yogananda não foi encontrado.$NC"
@@ -57,7 +57,7 @@ else
 fi
 
 mysql curso -e \
-"SELECT * FROM usuarios WHERE nome = 'Jiddu Krishnamurti' AND email = 'jiddu@krishnamurti.in' AND nascimento = '1985-05-11' AND profissao = 'Professor do Mundo' AND status = 1" | \
+"SELECT * FROM usuarios WHERE nome = 'Jiddu Krishnamurti' AND email = 'jiddu@krishnamurti.in' AND nascimento = '1895-05-11' AND profissao = 'Professor do Mundo' AND status = 1" | \
 grep -i jiddu > /dev/null 2>&1
 if [ "$?" -ne "0"  ]; then
 	echo -e "${RED}Ops... o usuário Jiddu Krishnamurti não foi encontrado.$NC"

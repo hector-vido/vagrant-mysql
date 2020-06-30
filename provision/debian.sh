@@ -12,7 +12,7 @@ rm -rf /etc/apt/sources.list.d/mysql.list
 apt-get update && apt-get install -y gnupg vim
 
 # Adiciona chave e repositório
-apt-key add /vagrant/files/mysql.asc
+wget -q -O - https://dev.mysql.com/doc/refman/8.0/en/checking-gpg-signature.html | grep -zEo -- '-----BEGIN.*BLOCK-----' | apt-key add -
 echo 'deb http://repo.mysql.com/apt/debian/ buster mysql-8.0' > /etc/apt/sources.list.d/mysql.list
 apt-get update
 
