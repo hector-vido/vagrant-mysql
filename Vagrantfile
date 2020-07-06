@@ -3,8 +3,7 @@
 
 vms = {
   'debian' => {'memory' => '2048', 'cpus' => 2, 'ip' => '10', 'box' => 'debian/buster64', 'provision' => 'debian.sh'},
-  'centos' => {'memory' => '2048', 'cpus' => 2, 'ip' => '20', 'box' => 'centos/8', 'provision' => 'centos.sh'},
-  'frm' => {'memory' => '2048', 'cpus' => 2, 'ip' => '30', 'box' => 'debian/buster64'}
+  'centos' => {'memory' => '2048', 'cpus' => 2, 'ip' => '20', 'box' => 'centos/8', 'provision' => 'centos.sh'}
 }
 
 Vagrant.configure('2') do |config|
@@ -16,7 +15,7 @@ Vagrant.configure('2') do |config|
       my.vm.box = conf['box']
       my.vm.hostname = "#{name}.example.com"
       my.vm.network 'private_network', ip: "172.27.11.#{conf['ip']}"
-      #my.vm.provision 'shell', path: "provision/#{conf['provision']}"
+      my.vm.provision 'shell', path: "provision/#{conf['provision']}"
       my.vm.provider 'virtualbox' do |vb|
         vb.memory = conf['memory']
         vb.cpus = conf['cpus']

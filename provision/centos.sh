@@ -14,6 +14,10 @@ chmod 400 /root/.ssh/*
 
 # Habilita repositório e instala o MySQL
 rpm -ihv https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+
+#yum-config-manager --disable 'mysql80-community'
+#yum-config-manager --enable 'mysql57-community'
+
 yum install -y mysql-server vim
 systemctl enable mysqld
 systemctl start mysqld
