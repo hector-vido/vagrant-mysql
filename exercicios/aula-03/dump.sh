@@ -19,8 +19,8 @@ time zcat employees-titles.sql.gz | mysql employees_sql
 # CSV
 
 mysql -e "CREATE DATABASE employees_csv"
-cd /var/lib/mysql-file/employees
+cd /var/lib/mysql-files/employees
 for X in *.sql; do mysql -f employees_csv < $X; done
 mysql -e 'SET GLOBAL foreign_key_checks=0'
-mysqlimport --use-threads=4 employees_csv $PWD/*.txt
+time mysqlimport --use-threads=4 employees_csv $PWD/*.txt
 mysql -e 'SET GLOBAL foreign_key_checks=1'
