@@ -18,18 +18,14 @@ rpm -ihv https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 #yum-config-manager --disable 'mysql80-community'
 #yum-config-manager --enable 'mysql57-community'
 
-yum install -y mysql-server vim
+yum install -y mysql-server mysql-shell vim
+
+if [ "$(grep report_host /etc/my.cnf.d/mysql-server.cnf)" == "" ]; then
+  echo 'report_host = 172.27.11.20' >> /etc/my.cnf.d/mysql-server.cnf
+fi
+
 systemctl enable mysqld
 systemctl start mysqld
-
-# Afrouxa as políticas de senha
-grep 'validate_password_policy' /etc/my.cnf > /dev/null
-if [ "$?" -ne "0" ]; then
-  echo 'validate_password_policy=LOW' >> /etc/my.cnf
-  echo 'validate_password_length=6' >> /etc/my.cnf
-fi
-systemctl restart mysqld
-sleep 10
 
 # Altera a senha do root e configura o client
 mysql -u root -e "ALTER USER root@localhost IDENTIFIED BY '4linux'"
