@@ -13,7 +13,10 @@ apt-get update && apt-get install -y gnupg vim
 
 # Adiciona chave e repositório
 wget -q -O - https://dev.mysql.com/doc/refman/8.0/en/checking-gpg-signature.html | grep -zEo -- '-----BEGIN.*BLOCK-----' | apt-key add -
-echo 'deb http://repo.mysql.com/apt/debian/ buster mysql-8.0' > /etc/apt/sources.list.d/mysql.list
+cat > /etc/apt/sources.list.d/mysql.list <<EOF
+deb http://repo.mysql.com/apt/debian/ buster mysql-8.0
+deb http://repo.mysql.com/apt/debian/ buster mysql-tools
+EOF
 apt-get update
 
 # Ajusta para instalação não assistida
