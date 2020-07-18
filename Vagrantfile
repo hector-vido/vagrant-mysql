@@ -2,8 +2,10 @@
 # vi: set ft=ruby :
 
 vms = {
-  'debian' => {'memory' => '1024', 'cpus' => 2, 'ip' => '10', 'box' => 'debian/buster64', 'provision' => 'debian.sh'},
-  'centos' => {'memory' => '1024', 'cpus' => 2, 'ip' => '20', 'box' => 'centos/8', 'provision' => 'centos.sh'}
+  'db1' => {'memory' => '1024', 'cpus' => 2, 'ip' => '10', 'box' => 'debian/buster64', 'provision' => 'debian.sh'},
+  'db2' => {'memory' => '1024', 'cpus' => 2, 'ip' => '10', 'box' => 'debian/buster64', 'provision' => 'debian.sh'},
+  'db3' => {'memory' => '1024', 'cpus' => 2, 'ip' => '10', 'box' => 'debian/buster64', 'provision' => 'debian.sh'}
+  #'centos' => {'memory' => '1024', 'cpus' => 2, 'ip' => '20', 'box' => 'centos/8', 'provision' => 'centos.sh'}
   #'opensuse' => {'memory' => '1024', 'cpus' => 2, 'ip' => '30', 'box' => 'opensuse/Tumbleweed.x86_64', 'provision' => 'opensuse.sh'}
 }
 

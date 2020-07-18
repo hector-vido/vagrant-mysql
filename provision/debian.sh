@@ -25,7 +25,7 @@ debconf-set-selections <<< 'mysql-community-server mysql-community-server/re-roo
 DEBIAN_FRONTEND='noninteractive' apt-get install -y mysql-community-server mysql-shell
 
 # Configura o client
-echo -e '[client]\nuser=root\npassword=4linux' > /root/.my.cnf
+#echo -e '[client]\nuser=root\npassword=4linux' > /root/.my.cnf
 echo "export PROMPT_COMMAND='history -a'" > /root/.bashrc
 
 if [ "$(grep report_host /etc/mysql/mysql.conf.d/mysqld.cnf)" == "" ]; then

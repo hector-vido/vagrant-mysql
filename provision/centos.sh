@@ -29,5 +29,5 @@ systemctl start mysqld
 
 # Altera a senha do root e configura o client
 mysql -u root -e "ALTER USER root@localhost IDENTIFIED BY '4linux'"
-echo -e '[client]\nuser=root\npassword=4linux' > /root/.my.cnf
+#echo -e '[client]\nuser=root\npassword=4linux' > /root/.my.cnf
 echo "export PROMPT_COMMAND='history -a'" > /root/.bashrc
