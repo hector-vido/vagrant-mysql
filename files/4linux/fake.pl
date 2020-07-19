@@ -15,6 +15,9 @@ foreach('estados', 'cidades', 'alunos', 'alunos_extras', 'professores', 'turmas'
 	$dbh->do("TRUNCATE TABLE $_");
 }
 
+$dbh->do("INSERT INTO cursos (id, nome, duracao, valor) VALUES (450, 'Linux Beginners', 40, 1000.00),(451, 'Linux Administrator', 40, 1200.00),(452, 'Linux Engineer', 40, 1500.00),(801, 'MySQL', 40, 1400.00),(802, 'PostgreSQL', 40, 1400.00),(803, 'MongoDB', 40, 1400.00),(500, 'PHP Básico', 40, 1200.00),(501, 'PHP Intermediário', 40, 1200.00),(502, 'PHP Avançado', 40, 1200.00),(520, 'Python Básico', 40, 1200.00),(521, 'Python para Administradores', 40, 1400.00),(522, 'Python para Cientistas de Dados', 40, 1500.00),(525, 'Infraestrutura Ágil', 40, 1600.00),(540, 'Docker', 40, 1500.00),(541, 'Kubernetes', 40, 1500.00),(542, 'Openshift', 20, 1000.00),(543, 'Rancher', 20, 1000.00),(600, 'pfSense', 20, 800.00),(700, 'OpenLDAP e Samba', 20, 800.00),(900, 'Segurança em Servidores Linux', 40, 1500.00)");
+
+
 my $filename = '/vagrant/files/cidades.csv';
 open(FH, '<:encoding(UTF-8)', $filename) or die $!;
 
@@ -81,9 +84,15 @@ for(my $i = 0; $i < 100; $i++) {
 }
 $dbh->do(substr($sql, 0, -2));
 
+my $sth = $dbh->prepare("SELECT GROUP_CONCAT(id) FROM cursos GROUP BY ''");
+$sth->execute();
+my $cids = $sth->fetchrow_array;
+my @cids = split(/,/, $cids);
+
 my @horarios = ('08:30', '18:30');
-$sql = "INSERT INTO turmas (professor_cpf, inicio, fim) VALUES ";
+$sql = "INSERT INTO turmas (curso_id, professor_cpf, inicio, fim) VALUES ";
 for(my $i = 0; $i < 10000; $i++) {
+	my $curso = $cids[rand @cids];
 	my $ano = '20' . sprintf('%02d', (int(rand(20)) + 1));
 	my $mes = sprintf('%02d', int(rand(12)) + 1);
 	my $dia = sprintf('%02d', int(rand(28)) + 1);
@@ -94,6 +103,6 @@ for(my $i = 0; $i < 10000; $i++) {
 	}
 	my $fim = "$ano-$mes-$dia $horario:00";
 	my $cpf = $cpfs[rand @cpfs];
-	$sql .= "('$cpf', '$inicio', '$fim'), ";	
+	$sql .= "('$curso', '$cpf', '$inicio', '$fim'), ";	
 }
 $dbh->do(substr($sql, 0, -2));

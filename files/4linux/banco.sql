@@ -13,8 +13,6 @@ CREATE TABLE cursos (
   alterado DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO cursos (id, nome, duracao, valor) VALUES (450, 'Linux Beginners', 40, 1000.00),(451, 'Linux Administrator', 40, 1200.00),(452, 'Linux Engineer', 40, 1500.00),(801, 'MySQL', 40, 1400.00),(802, 'PostgreSQL', 40, 1400.00),(803, 'MongoDB', 40, 1400.00),(500, 'PHP Básico', 40, 1200.00),(501, 'PHP Intermediário', 40, 1200.00),(502, 'PHP Avançado', 40, 1200.00),(520, 'Python Básico', 40, 1200.00),(521, 'Python para Administradores', 40, 1400.00),(522, 'Python para Cientistas de Dados', 40, 1500.00),(525, 'Infraestrutura Ágil', 40, 1600.00),(540, 'Docker', 40, 1500.00),(541, 'Kubernetes', 40, 1500.00),(542, 'Openshift', 20, 1000.00),(543, 'Rancher', 20, 1000.00),(600, 'pfSense', 20, 800.00),(700, 'OpenLDAP e Samba', 20, 800.00),(900, 'Segurança em Servidores Linux', 40, 1500.00);
-
 CREATE TABLE professores (
   cpf CHAR(14) PRIMARY KEY,
   nome VARCHAR(100) NOT NULL DEFAULT '',
@@ -45,6 +43,7 @@ CREATE TABLE alunos_extras (
 
 CREATE TABLE turmas (
   id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  curso_id SMALLINT UNSIGNED NOT NULL,
   professor_cpf CHAR(14) NOT NULL DEFAULT '',
   inicio DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00',
   fim DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00'
