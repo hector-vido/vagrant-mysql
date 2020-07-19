@@ -11,7 +11,7 @@ my $text = Text::Lorem->new();
 
 my $dbh = DBI->connect("DBI:mysql:database=4linux;host=localhost", "root", "4linux", {'RaiseError' => 1, 'mysql_enable_utf8mb4' => 1});
 
-foreach('estados', 'cidades', 'alunos', 'alunos_extras', 'professores', 'turmas', 'cursos', 'turmas_alunos') {
+foreach('estados', 'cidades', 'alunos', 'alunos_extras', 'professores', 'turmas', 'cursos', 'turmas_alunos', 'alunos_compras') {
 	$dbh->do("TRUNCATE TABLE $_");
 }
 
@@ -57,9 +57,9 @@ __PACKAGE__->register_plugin(
 
 my $faker = Data::Faker->new();
 
-my $sql_alunos = 'INSERT INTO alunos (cpf, nome, email, telefone, nascimento) VALUES ';
-my $sql_ae = 'INSERT INTO alunos_extras (cpf, endereco, cidade_id, cep, site, cv) VALUES ';
-for(my $i = 0; $i < 10000; $i++) {
+my $sql_alunos = 'INSERT IGNORE INTO alunos (cpf, nome, email, telefone, nascimento) VALUES ';
+my $sql_ae = 'INSERT IGNORE INTO alunos_extras (cpf, endereco, cidade_id, cep, site, cv) VALUES ';
+for(my $i = 0; $i < 5000000; $i++) {
 	my ($name, $cpf, $endereco) = ($faker->name, $faker->cpf, $faker->street_address);
 	$name =~ s/'/\\'/g;
 	$endereco =~ s/'/\\'/g;
@@ -73,6 +73,7 @@ for(my $i = 0; $i < 10000; $i++) {
 	}
 }
 $dbh->prepare(substr($sql_alunos, 0, -2))->execute();
+$dbh->prepare(substr($sql_ae, 0, -2))->execute();
 
 my $sql = 'INSERT INTO professores (cpf, nome, email, nascimento) VALUES ';
 my @cpfs;
@@ -115,17 +116,25 @@ while(my $cpf = $sth->fetchrow_hashref()) {
 }
 
 $sql = 'INSERT IGNORE INTO turmas_alunos (turma_id, aluno_cpf) VALUES ';
+my $sql_compras = 'INSERT IGNORE INTO alunos_compras (aluno_cpf, turma_id, valor) VALUES ';
 for(my $i = 1; $i <= 10000; $i++) {
 	my $total = 10 + int(rand(10));
 	for(my $x = 1; $x <= $total; $x++) {
 		my $cpf = $cpfs[rand @cpfs];
+		my $valor = 800 + int(rand(10)) * 100;
 		$sql .= "($i, '$cpf'), ";
+		$sql_compras .= "('$cpf', $i, $valor.00), ";
 	}
 	if ($i % 200 == 0) {
 		$dbh->do(substr($sql, 0, -2));
+		$dbh->do(substr($sql_compras, 0, -2));
 		$sql = 'INSERT IGNORE INTO turmas_alunos (turma_id, aluno_cpf) VALUES ';
+		$sql_compras = 'INSERT IGNORE INTO alunos_compras (aluno_cpf, turma_id, valor) VALUES ';
 	}
 }
 if($sql ne 'INSERT IGNORE INTO turmas_alunos (turma_id, aluno_cpf) VALUES ') {
 	$dbh->do(substr($sql, 0, -2));
+}
+if($sql_compras ne 'INSERT IGNORE INTO alunos_compras (aluno_cpf, turma_id, valor) VALUES ') {
+	$dbh->do(substr($sql_compras, 0, -2));
 }

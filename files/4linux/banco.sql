@@ -56,11 +56,10 @@ CREATE TABLE turmas_alunos (
 );
 
 CREATE TABLE alunos_compras (
-  curso_id MEDIUMINT UNSIGNED NOT NULL,
   aluno_cpf CHAR(14) NOT NULL,
   turma_id MEDIUMINT UNSIGNED NOT NULL,
   valor FLOAT NOT NULL DEFAULT 0,
-  PRIMARY KEY(aluno_cpf, turma_id, curso_id)
+  PRIMARY KEY(aluno_cpf, turma_id)
 );
 
 CREATE TABLE estados (
