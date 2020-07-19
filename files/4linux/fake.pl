@@ -60,7 +60,7 @@ my $faker = Data::Faker->new();
 
 my $sql_alunos = 'INSERT IGNORE INTO alunos (cpf, nome, email, telefone, nascimento) VALUES ';
 my $sql_ae = 'INSERT IGNORE INTO alunos_extras (cpf, endereco, cidade_id, cep, site, cv) VALUES ';
-for(my $i = 0; $i < 2000000; $i++) {
+for(my $i = 0; $i < 100000; $i++) {
 	my ($name, $cpf, $endereco) = ($faker->name, $faker->cpf, $faker->street_address);
 	$name =~ s/'/\\'/g;
 	$endereco =~ s/'/\\'/g;
