@@ -11,7 +11,7 @@ my $text = Text::Lorem->new();
 
 my $dbh = DBI->connect("DBI:mysql:database=4linux;host=localhost", "root", "4linux", {'RaiseError' => 1, 'mysql_enable_utf8mb4' => 1});
 
-foreach('estados', 'cidades', 'alunos', 'alunos_extras', 'professores', 'turmas') {
+foreach('estados', 'cidades', 'alunos', 'alunos_extras', 'professores', 'turmas', 'cursos', 'turmas_alunos') {
 	$dbh->do("TRUNCATE TABLE $_");
 }
 
@@ -106,3 +106,26 @@ for(my $i = 0; $i < 10000; $i++) {
 	$sql .= "('$curso', '$cpf', '$inicio', '$fim'), ";	
 }
 $dbh->do(substr($sql, 0, -2));
+
+$sth = $dbh->prepare("SELECT cpf FROM alunos ORDER BY RAND() LIMIT 50000");
+$sth->execute();
+@cpfs = ();
+while(my $cpf = $sth->fetchrow_hashref()) {
+	push @cpfs, $cpf->{'cpf'}
+}
+
+$sql = 'INSERT IGNORE INTO turmas_alunos (turma_id, aluno_cpf) VALUES ';
+for(my $i = 1; $i <= 10000; $i++) {
+	my $total = 10 + int(rand(10));
+	for(my $x = 1; $x <= $total; $x++) {
+		my $cpf = $cpfs[rand @cpfs];
+		$sql .= "($i, '$cpf'), ";
+	}
+	if ($i % 200 == 0) {
+		$dbh->do(substr($sql, 0, -2));
+		$sql = 'INSERT IGNORE INTO turmas_alunos (turma_id, aluno_cpf) VALUES ';
+	}
+}
+if($sql ne 'INSERT IGNORE INTO turmas_alunos (turma_id, aluno_cpf) VALUES ') {
+	$dbh->do(substr($sql, 0, -2));
+}
