@@ -10,6 +10,7 @@ use Text::Lorem;
 my $text = Text::Lorem->new();
 
 my $dbh = DBI->connect("DBI:mysql:database=4linux;host=localhost", "root", "4linux", {'RaiseError' => 1, 'mysql_enable_utf8mb4' => 1});
+$dbh->do('SET sql_log_bin = OFF');
 
 foreach('estados', 'cidades', 'alunos', 'alunos_extras', 'professores', 'turmas', 'cursos', 'turmas_alunos', 'alunos_compras') {
 	$dbh->do("TRUNCATE TABLE $_");
@@ -59,13 +60,14 @@ my $faker = Data::Faker->new();
 
 my $sql_alunos = 'INSERT IGNORE INTO alunos (cpf, nome, email, telefone, nascimento) VALUES ';
 my $sql_ae = 'INSERT IGNORE INTO alunos_extras (cpf, endereco, cidade_id, cep, site, cv) VALUES ';
-for(my $i = 0; $i < 5000000; $i++) {
+for(my $i = 0; $i < 2000000; $i++) {
 	my ($name, $cpf, $endereco) = ($faker->name, $faker->cpf, $faker->street_address);
 	$name =~ s/'/\\'/g;
 	$endereco =~ s/'/\\'/g;
 	$sql_alunos .= "('$cpf', '$name', '${\$faker->email}', '${\$faker->telefone}', '${\$faker->sqldate}'), ";
 	$sql_ae .= "('$cpf', '$endereco', '${\$faker->cidade}', '${\$faker->cep}', '${\$faker->domain_name}', '${\$faker->cv}'), ";
 	if ($i % 50000 == 0) {
+		print "$i alunos cadastrados...\n";
 		$dbh->do(substr($sql_alunos, 0, -2));
 		$dbh->do(substr($sql_ae, 0, -2));
 		$sql_alunos = 'INSERT IGNORE INTO alunos (cpf, nome, email, telefone, nascimento) VALUES ';
