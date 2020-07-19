@@ -66,11 +66,11 @@ for(my $i = 0; $i < 1000000; $i++) {
 	$endereco =~ s/'/\\'/g;
 	$sql_alunos .= "('$cpf', '$name', '${\$faker->email}', '${\$faker->telefone}', '${\$faker->sqldate}'), ";
 	$sql_ae .= "('$cpf', '$endereco', '${\$faker->cidade}', '${\$faker->cep}', '${\$faker->domain_name}', '${\$faker->cv}'), ";
-	if ($i % 10000 == 0) {
+	if ($i % 50000 == 0) {
 		$dbh->do(substr($sql_alunos, 0, -2));
 		$dbh->do(substr($sql_ae, 0, -2));
 		$sql_alunos = 'INSERT IGNORE INTO alunos (cpf, nome, email, telefone, nascimento) VALUES ';
-		$sql_ae = 'INSERT INTO alunos_extras (cpf, endereco, cidade, cep, site, cv) VALUES ';
+		$sql_ae = 'INSERT IGNORE INTO alunos_extras (cpf, endereco, cidade, cep, site, cv) VALUES ';
 	}
 }
 $dbh->prepare(substr($sql_alunos, 0, -2))->execute();

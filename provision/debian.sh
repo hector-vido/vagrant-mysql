@@ -26,6 +26,7 @@ DEBIAN_FRONTEND='noninteractive' apt-get install -y mysql-community-server mysql
 
 # Configura o client
 #echo -e '[client]\nuser=root\npassword=4linux' > /root/.my.cnf
+mysql -u root -p4linux -e "ALTER USER root@localhost IDENTIFIED WITH mysql_native_password BY '4linux'" > /dev/null
 echo "export PROMPT_COMMAND='history -a'" > /root/.bashrc
 
 if [ "$(grep report_host /etc/mysql/mysql.conf.d/mysqld.cnf)" == "" ]; then
