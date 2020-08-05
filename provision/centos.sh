@@ -21,7 +21,7 @@ rpm -ihv https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 yum install -y mysql-server mysql-shell vim
 
 if [ "$(grep report_host /etc/my.cnf.d/mysql-server.cnf)" == "" ]; then
-  echo 'report_host = 172.27.11.20' >> /etc/my.cnf.d/mysql-server.cnf
+  echo "report_host = $(ip a | grep -Eo '172.27.11.[0-9]{2}' | grep -v 25)" >> /etc/my.cnf.d/mysql-server.cnf
 fi
 
 systemctl enable mysqld

@@ -11,14 +11,18 @@ rpm -ivh https://dev.mysql.com/get/mysql80-community-release-sl15-3.noarch.rpm
 rpm --import /etc/RPM-GPG-KEY-mysql
 zypper install -y mysql-community-server
 
+systemctl start mysql
+sleep 10
+
+PASS=$(grep password /var/log/mysql/mysqld.log | awk '{print $NF}')
+
 if [ "$(grep report_host /etc/my.cnf)" == "" ]; then
-  echo 'report_host = 172.27.11.30' >> /etc/my.cnf
+  echo "report_host = $(ip a | grep -Eo '172.27.11.[0-9]{2}' | grep -v 25)" >> /etc/my.cnf
 fi
 
 systemctl start mysql
 systemctl enable mysql
-
-PASS=$(grep password /var/log/mysql/mysqld.log | awk '{print $NF}')
+sleep 10
 
 # Afrouxa as políticas de senha
 grep 'validate_password_policy' /etc/my.cnf > /dev/null
