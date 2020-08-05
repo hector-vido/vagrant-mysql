@@ -30,6 +30,6 @@ mysql -u root -p4linux -e "ALTER USER root@localhost IDENTIFIED WITH mysql_nativ
 echo "export PROMPT_COMMAND='history -a'" > /root/.bashrc
 
 if [ "$(grep report_host /etc/mysql/mysql.conf.d/mysqld.cnf)" == "" ]; then
-  echo 'report_host = 172.27.11.10' >> /etc/mysql/mysql.conf.d/mysqld.cnf
+  echo "report_host = $(ip a | grep -Eo '172.27.11.[0-9]{2}' | grep -v 25)" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 fi
 systemctl restart mysql
