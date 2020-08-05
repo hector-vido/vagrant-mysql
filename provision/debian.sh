@@ -22,7 +22,7 @@ apt-get update
 # Ajusta para instalação não assistida
 debconf-set-selections <<< 'mysql-community-server mysql-community-server/root-pass password 4linux'
 debconf-set-selections <<< 'mysql-community-server mysql-community-server/re-root-pass password 4linux'
-DEBIAN_FRONTEND='noninteractive' apt-get install -y mysql-community-server mysql-shell
+DEBIAN_FRONTEND='noninteractive' apt-get install -y mysql-community-server mysql-shell mysql-router
 
 # Configura o client
 #echo -e '[client]\nuser=root\npassword=4linux' > /root/.my.cnf
