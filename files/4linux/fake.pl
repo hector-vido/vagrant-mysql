@@ -61,11 +61,11 @@ my $faker = Data::Faker->new();
 print "Inserindo alunos...\n";
 $sth1 = $dbh->prepare('INSERT IGNORE INTO alunos (cpf, nome, email, telefone, nascimento) VALUES (?, ?, ?, ?, ?)');
 $sth2 = $dbh->prepare('INSERT IGNORE INTO alunos_extras (cpf, endereco, cidade_id, cep, site, cv) VALUES  (?, ?, ?, ?, ?, ?)');
-for(my $i = 0; $i < 100000; $i++) {
+for(my $i = 1; $i <= 1000000; $i++) {
 	my $cpf = $faker->cpf;
 	$sth1->execute($cpf, $faker->name, $faker->email, $faker->telefone, $faker->sqldate);
 	$sth2->execute($cpf, $faker->street_address, $faker->cidade, $faker->cep, $faker->domain_name, $faker->cv);
-	if ($i ne 0 && $i % 10000 eq 0) {
+	if ($i % 10000 eq 0) {
         print "$i alunos inseridos...\n";
 	}
 }
