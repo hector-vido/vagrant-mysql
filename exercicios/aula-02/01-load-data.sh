@@ -34,7 +34,7 @@ echo -e "#################################################${NC}"
 
 echo 'Contando o número de registros...'
 sleep 1
-N=$(mysql curso -e "SELECT COUNT(*) as '' FROM sales" | tr -d '[:space:]')
+N=$(mysql --defaults-file=/tmp/my.cnf curso -e "SELECT COUNT(*) as '' FROM sales" | tr -d '[:space:]')
 
 if [ "$N" -ge "1500000" ]; then
 	echo -e "${GREEN}####################################################"

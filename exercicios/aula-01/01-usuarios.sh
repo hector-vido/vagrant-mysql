@@ -46,7 +46,7 @@ else
 	echo -e "${GREEN}Coluna status encontrada!$NC"
 fi
 
-mysql curso -e \
+mysql --defaults-file=/tmp/my.cnf curso -e \
 "SELECT * FROM usuarios WHERE nome = 'Paramahansa Yogananda' AND email = 'paramahansa@yogananda.in' AND nascimento = '1893-01-05' AND profissao = 'Yogi' AND status = 1" | \
 grep -i paramahansa > /dev/null 2>&1
 if [ "$?" -ne "0"  ]; then
@@ -56,7 +56,7 @@ else
 	echo -e "${GREEN}Usuário Paramahansa Yogananda encontrada!$NC"
 fi
 
-mysql curso -e \
+mysql --defaults-file=/tmp/my.cnf curso -e \
 "SELECT * FROM usuarios WHERE nome = 'Jiddu Krishnamurti' AND email = 'jiddu@krishnamurti.in' AND nascimento = '1895-05-11' AND profissao = 'Professor do Mundo' AND status = 1" | \
 grep -i jiddu > /dev/null 2>&1
 if [ "$?" -ne "0"  ]; then

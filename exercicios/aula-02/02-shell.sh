@@ -33,7 +33,7 @@ echo -e "# Parabéns! Todas as colunas foram encontradas! #"
 echo -e "#################################################${NC}\n"
 
 
-mysql curso -e 'SELECT nome FROM planetas' > /tmp/aula-2-exercicio-02.list
+mysql --defaults-file=/tmp/my.cnf curso -e 'SELECT nome FROM planetas' > /tmp/aula-2-exercicio-02.list
 for X in Mercury Venus Earth Mars Jupiter Saturn Uranus Neptune Pluto; do
 	FOUND=0
 	while read LINE; do
