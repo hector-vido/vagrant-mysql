@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # Simula muitas conexões ao servidor
-# apt-get install libparallel-forkmanager-perl libdbd-mysql-perl
+# apt-get install libparallel-prefork-perl libdbd-mysql-perl
 
 use strict;
 use warnings;
@@ -30,14 +30,13 @@ my $pm = Parallel::ForkManager->new($nconn);
 LOOP:
 for(my $n = 0; $n < $nconn; $n++) {
         my $pid = $pm->start and next LOOP;
-        my $dbh = conn();
         for(my $i = 0; $i < $nexec; $i++) {
+                my $dbh = conn();
                 my $done = $dbh->do('INSERT INTO seeds (seed) VALUES (' . int(rand(1000000)) . ')');
                 if (!$done) {
                         $dbh->disconnect();
                         sleep 5;
-                        $dbh = conn();
-                        $dbh->do('INSERT INTO seeds (seed) VALUES (' . int(rand(1000000)) . ')');
+                        $i--;
                 }
         }
         $pm->finish;
