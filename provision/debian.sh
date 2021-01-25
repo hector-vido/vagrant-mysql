@@ -19,8 +19,8 @@ fi
 rm -rf /etc/apt/sources.list.d/mysql.list
 apt-get update && apt-get install -y gnupg vim
 
-#apt-get install -y mariadb-server
-#exit
+apt-get install -y mariadb-server
+exit
 
 # Adiciona chave e repositório
 wget -q -O - https://dev.mysql.com/doc/refman/8.0/en/checking-gpg-signature.html | grep -zEo -- '-----BEGIN.*BLOCK-----' | apt-key add -

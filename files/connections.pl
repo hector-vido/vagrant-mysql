@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # Simula muitas conexões ao servidor
-# apt-get install libparallel-prefork-perl libdbd-mysql-perl
+# apt-get install libparallel-forkmanager-perl libdbd-mysql-perl
 
 use strict;
 use warnings;
