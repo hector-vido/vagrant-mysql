@@ -31,15 +31,12 @@ Entre em qualquer uma das máquinas através de seus nomes:
 vagrant ssh master
 ```
 
-Para se conectar, utilize o usuário **root** com a senha **4Linux**.
-
-```bash
-mysql -u 'root' -p'4linux'
-```
+O MySQL não é instalado automaticamente, a instalação é realizada durante o curso.
 
 ## Máquinas
 
 | Nome    | Distro    | IP           |
 |---------|-----------|--------------|
-| debian  | Debian 10 | 172.27.11.10 |
-| centos  | CentOS  8 | 172.27.11.20 |
+| db1     | Debian 10 | 172.27.11.10 |
+| db2     | Debian 10 | 172.27.11.20 |
+| db3     | Debian 10 | 172.27.11.30 |

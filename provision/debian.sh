@@ -17,6 +17,9 @@ fi
 
 # Atualiza pacotes e prepara a máquina
 rm -rf /etc/apt/sources.list.d/mysql.list
+
+exit
+
 apt-get update && apt-get install -y gnupg vim
 
 #apt-get install -y mariadb-server
@@ -44,3 +47,17 @@ if [ "$(grep report_host /etc/mysql/mysql.conf.d/mysqld.cnf)" == "" ]; then
   echo "report_host = $(ip a | grep -Eo '172.27.11.[0-9]{2}' | grep -v 25)" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 fi
 systemctl restart mysql
+
+if [ "$HOSTNAME" == "db1" ]; then
+	apt-get install -y git
+	cd
+	git clone https://github.com/datacharmer/test_db.git
+	wget -q https://downloads.mysql.com/docs/sakila-db.tar.gz
+	cd ~/test_db
+	mysql -u root -p4linux < employees.sql
+	cd
+	tar -xzf sakila-db.tar.gz
+	cd ~/sakila-db/
+	mysql -u root -p4linux < sakila-schema.sql
+	mysql -u root -p4linux < sakila-data.sql
+fi
