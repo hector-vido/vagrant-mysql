@@ -1,6 +1,6 @@
 # MySQL
 
-Este Vagrantfile provisiona duas máquinas virtuais, uma com Debian 10 e outra com CentOS 8, instalando a versão 8.0 do MySQL em ambas.
+Este `Vagrantfile` provisiona três máquinas virtuais com Debian 10 com a versão 8.0 do MySQL.
 
 ## Provisionamento
 
@@ -23,15 +23,18 @@ Verifique quais máquinas estão rodando:
 
 ```bash
 vagrant status
+#Current machine states:
+#
+#db1                       running (virtualbox)
+#db2                       running (virtualbox)
+#db3                       running (virtualbox)
 ```
 
 Entre em qualquer uma das máquinas através de seus nomes:
 
 ```bash
-vagrant ssh master
+vagrant ssh db1
 ```
-
-O MySQL não é instalado automaticamente, a instalação é realizada durante o curso.
 
 ## Máquinas
 
