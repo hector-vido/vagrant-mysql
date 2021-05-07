@@ -7,6 +7,7 @@ cp /vagrant/files/key.pub /root/.ssh/id_rsa.pub
 cp /vagrant/files/key.pub /root/.ssh/authorized_keys
 chmod 400 /root/.ssh/*
 
+# Cria swap se não existir
 if [ "$(swapon -v)" == "" ]; then
   dd if=/dev/zero of=/swapfile bs=1M count=512
   chmod 0600 /swapfile
@@ -50,6 +51,7 @@ else # MySQL
 	systemctl restart mysql
 fi
 
+# Bases de Exemplo
 if [ "$2" -eq 1 ]; then
 	apt-get install -y git
 	git clone --depth 1 https://github.com/datacharmer/test_db.git ~/employees-db
