@@ -27,14 +27,16 @@ if [ "$1" == 'mariadb' ]; then # MariaDB
 	systemctl start mariadb
 	systemctl enable mariadb
 elif [ "$1" == 'percona' ]; then # Percona
-	wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
+	wget --quiet https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
 	dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
 	percona-release setup ps80
 	debconf-set-selections <<< 'percona-server-server percona-server-server/root-pass password 4linux'
 	debconf-set-selections <<< 'percona-server-server percona-server-server/re-root-pass password 4linux'
 	DEBIAN_FRONTEND=noninteractive apt-get install -y percona-server-server
 else # MySQL
-	apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
+	# apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5 # timeout frequente
+	KEY=https://dev.mysql.com/doc/refman/8.0/en/checking-gpg-signature.html
+	wget --quiet -O- "$KEY" | grep -Eoz -- '-----.*-----' | apt-key add -
 	echo 'deb http://repo.mysql.com/apt/debian/ buster mysql-8.0 mysql-tools' > /etc/apt/sources.list.d/mysql.list
 
 	apt-get update
@@ -46,19 +48,22 @@ else # MySQL
 	grep report_host /etc/mysql/mysql.conf.d/mysqld.cnf > /dev/null
 	if [ "$?" -ne 0 ]; then
 		IP=$(ip a | grep -Eo '172.27.11.[0-9]{2}' | grep -v 25)
-		echo "report_host = $IP" >> /etc/mysql/mysql.conf.d/mysqld.cnf
+		echo -e '\n# InnoDB Cluster' >> /etc/mysql/mysql.conf.d/mysqld.cnf
+		echo "report_host     = $IP" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 	fi
 	systemctl restart mysql
 fi
 
 # Bases de Exemplo
 if [ "$2" -eq 1 ]; then
+	echo -e '[mysql]\nuser=root\npassword=4linux' > ~/.my.cnf
 	apt-get install -y git
-	git clone --depth 1 https://github.com/datacharmer/test_db.git ~/employees-db
-	wget -q https://downloads.mysql.com/docs/sakila-db.tar.gz -O - | tar -xzv -C ~/
+	git clone --depth 1 --quiet https://github.com/datacharmer/test_db.git ~/employees-db
+	wget --quiet https://downloads.mysql.com/docs/sakila-db.tar.gz -O - | tar -xzv -C ~/
 	cd ~/employees-db
-	mysql -u root -p4linux < employees.sql
+	mysql < employees.sql
 	cd ~/sakila-db
-	mysql -u root -p4linux < sakila-schema.sql
-	mysql -u root -p4linux < sakila-data.sql
+	mysql < sakila-schema.sql
+	mysql < sakila-data.sql
+	rm ~/.my.cnf
 fi

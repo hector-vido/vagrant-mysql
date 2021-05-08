@@ -35,12 +35,13 @@ sleep 10
 
 mysql -u root -p$PASS --connect-expired-password -e "ALTER USER root@localhost IDENTIFIED WITH mysql_native_password BY '4linux'"
 
-zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed snappy
-zypper --gpg-auto-import-keys refresh
-zypper dup --from snappy
-zypper install -y snapd
-systemctl enable snapd
-systemctl start snapd
-systemctl enable snapd.apparmor
-systemctl start snapd.apparmor
-snap install mysql-shell
+# MySQL Shell via snap
+#zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed snappy
+#zypper --gpg-auto-import-keys refresh
+#zypper dup --from snappy
+#zypper install -y snapd
+#systemctl enable snapd
+#systemctl start snapd
+#systemctl enable snapd.apparmor
+#systemctl start snapd.apparmor
+#snap install mysql-shell
